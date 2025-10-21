@@ -1,0 +1,56 @@
+{% extends "layout_admin.html" %}
+
+{% block page_title %}Gerenciar Categorias{% endblock %}
+
+{% block content %}
+    
+    <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+        <h3>Adicionar Nova Categoria</h3>
+        <form method="POST" action="{{ url_for('gerenciar_categorias') }}" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.nome.label }}
+                {{ form.nome() }}
+                {% for error in form.nome.errors %}
+                    <span class="form-error">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+
+    <h3>Categorias Atuais</h3>
+    <table style="width: 100%; border-collapse: collapse; background: white;">
+        <thead>
+            <tr style="background: #e0e0e0;">
+                <th style="padding: 10px; text-align: left;">ID</th>
+                <th style="padding: 10px; text-align: left;">Nome</th>
+                <th style="padding: 10px; text-align: left;">Qtd. Produtos</th>
+                <th style="padding: 10px; text-align: left;">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cat in categorias %}
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 10px;">{{ cat.id }}</td>
+                    <td style="padding: 10px;">{{ cat.nome }}</td>
+                    <td style="padding: 10px;">{{ cat.produtos|length }}</td>
+                    <td style="padding: 10px;">
+                        <a href="{{ url_for('edit_categoria', categoria_id=cat.id) }}" class="btn">Editar</a>
+                        <a href="{{ url_for('delete_categoria', categoria_id=cat.id) }}" class="btn btn-danger" 
+                           onclick="return confirm('Tem certeza que deseja excluir? {% if cat.produtos|length > 0 %}Esta categoria tem produtos associados e não poderá ser excluída.{% endif %}');">
+                           Excluir
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" style="padding: 10px; text-align: center;">Nenhuma categoria cadastrada.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

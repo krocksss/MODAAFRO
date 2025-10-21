@@ -1,0 +1,79 @@
+{% extends "layout_admin.html" %}
+
+{% block page_title %}Customizar Site{% endblock %}
+
+{% block content %}
+
+    <h3>Configurações Gerais</h3>
+    <form method="POST" action="{{ url_for('gerenciar_site') }}" novalidate>
+        {{ settings_form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ settings_form.sobre_nos.label }}
+            {{ settings_form.sobre_nos(rows=6) }}
+        </div>
+        
+        <div class="form-group">
+            {{ settings_form.texto_footer.label }}
+            {{ settings_form.texto_footer() }}
+        </div>
+        
+        <div class="form-group">
+            {{ settings_form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+    
+    <hr>
+    
+    <h3>Banners do Carrossel</h3>
+    <form method="POST" action="{{ url_for('add_banner') }}" enctype="multipart/form-data" novalidate>
+        {{ banner_form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ banner_form.imagem.label }}
+            {{ banner_form.imagem }}
+            {% for error in banner_form.imagem.errors %}
+                <span class="form-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group">
+            {{ banner_form.produto_selecionado.label }}
+            {{ banner_form.produto_selecionado() }} {% for error in banner_form.produto_selecionado.errors %}
+                <span class="form-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group">
+            {{ banner_form.link_url.label }}
+            {{ banner_form.link_url(placeholder="Ex: https://google.com") }}
+            {% for error in banner_form.link_url.errors %}
+                <span class="form-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group">
+            {{ banner_form.ordem.label }}
+            {{ banner_form.ordem() }}
+        </div>
+        
+        <div class="form-group">
+            {{ banner_form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+    
+    <h4>Banners Atuais</h4>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        {% for banner in banners %}
+            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 4px;">
+                <img src="{{ url_for('uploaded_file', filename=banner.imagem_url) }}" style="width: 200px; object-fit: contain;">
+                <p>Ordem: {{ banner.ordem }}</p>
+                <p>Link: {{ banner.link_url or 'Nenhum' }}</p>
+                <a href="{{ url_for('delete_banner', banner_id=banner.id) }}" class="btn btn-danger" onclick="return confirm('Tem certeza?');">Excluir</a>
+            </div>
+        {% else %}
+            <p>Nenhum banner cadastrado.</p>
+        {% endfor %}
+    </div>
+
+{% endblock %}

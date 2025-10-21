@@ -1,0 +1,22 @@
+{% extends "layout_admin.html" %}
+
+{% block page_title %}Editar Categoria: {{ categoria.nome }}{% endblock %}
+
+{% block content %}
+<div style="background: white; padding: 20px; border-radius: 8px;">
+    <form method="POST" action="" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.nome.label }}
+            {{ form.nome() }}
+            {% for error in form.nome.errors %}
+                <span class="form-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ form.submit(value="Salvar Alterações", class="btn btn-primary") }}
+            <a href="{{ url_for('gerenciar_categorias') }}" class="btn" style="background: #eee;">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

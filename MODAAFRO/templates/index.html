@@ -1,0 +1,41 @@
+{% extends "layout_cliente.html" %}
+{% block content %}
+
+    <div class="carousel-container swiper">
+        <div class="swiper-wrapper">
+            {% for banner in banners %}
+            <div class="swiper-slide">
+                <a href="{{ banner.link_url or '#' }}">
+                    <img src="{{ url_for('uploaded_file', filename=banner.imagem_url) }}" alt="Banner Promocional">
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+
+    <section class="featured-products mt-5">
+        <h2 class="text-center mb-4">Produtos em Destaque</h2>
+        
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            
+            {% for produto in produtos %}
+            <div class="col">
+                <div class="card h-100 shadow-sm product-card-link" data-product-id="{{ produto.id }}" style="cursor: pointer;">
+                    <img src="{{ url_for('uploaded_file', filename=produto.imagem_destaque_url) if produto.imagem_destaque_url else url_for('static', filename='images/placeholder.png') }}" 
+                         class="card-img-top" alt="{{ produto.nome }}"
+                         style="height: 300px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title fs-6">{{ produto.nome }}</h5>
+                        <p class="card-text fw-bold text-primary fs-5">R$ {{ "%.2f"|format(produto.preco) }}</p>
+                    </div>
+                    </div>
+            </div>
+            {% endfor %}
+            
+        </div>
+    </section>
+
+{% endblock %}

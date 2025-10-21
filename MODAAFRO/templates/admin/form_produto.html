@@ -1,0 +1,86 @@
+{% extends "layout_admin.html" %}
+
+{% block page_title %}{{ "Editar" if produto else "Adicionar" }} Produto{% endblock %}
+
+{% block content %}
+
+<form method="POST" action="" enctype="multipart/form-data" novalidate>
+    {{ form.hidden_tag() }} <div class="form-group">
+        {{ form.nome.label }}
+        {{ form.nome(class="form-control") }}
+        {% for error in form.nome.errors %}
+            <span class="form-error">{{ error }}</span>
+        {% endfor %}
+    </div>
+    
+    <div class="form-group">
+        {{ form.descricao.label }}
+        {{ form.descricao(class="form-control", rows=5) }}
+        {% for error in form.descricao.errors %}
+            <span class="form-error">{{ error }}</span>
+        {% endfor %}
+    </div>
+    
+    <div class="form-group">
+        {{ form.preco.label }}
+        {{ form.preco(class="form-control", type="number", step="0.01") }}
+        {% for error in form.preco.errors %}
+            <span class="form-error">{{ error }}</span>
+        {% endfor %}
+    </div>
+    
+    <div class="form-group">
+        {{ form.categorias.label }}
+        {{ form.categorias(class="form-control") }}
+        {% for error in form.categorias.errors %}
+            <span class="form-error">{{ error }}</span>
+        {% endfor %}
+    </div>
+    
+    <div class="form-group">
+        {{ form.destaque.label }}
+        {{ form.destaque() }}
+    </div>
+
+    <hr>
+    
+    <h3>Imagens</h3>
+    
+    <div class="form-group">
+        {{ form.novas_imagens.label }}
+        {{ form.novas_imagens(multiple="multiple") }}
+        {% for error in form.novas_imagens.errors %}
+            <span class="form-error">{{ error }}</span>
+        {% endfor %}
+    </div>
+
+    {% if produto and produto.imagens %}
+        <h4>Imagens Atuais</h4>
+        <p>Selecione uma imagem para ser a <strong>Destaque</strong>. <br>
+           Marque "Excluir" para remover uma imagem ao salvar.</p>
+           
+        <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+            {% for img in produto.imagens %}
+                <div style="border: 1px solid #ccc; padding: 10px; border-radius: 4px; text-align: center;">
+                    <img src="{{ url_for('uploaded_file', filename=img.url_imagem) }}" alt="Imagem" style="width: 150px; height: 150px; object-fit: cover; margin-bottom: 10px;">
+                    <br>
+                    <input type="radio" name="imagem_destaque" value="{{ img.url_imagem }}"
+                           id="destaque-{{ img.id }}" 
+                           {{ "checked" if img.url_imagem == produto.imagem_destaque_url else "" }}>
+                    <label for="destaque-{{ img.id }}">Destaque</label>
+                    <br>
+                    <input type="checkbox" name="excluir_imagem" value="{{ img.id }}" id="excluir-{{ img.id }}">
+                    <label for="excluir-{{ img.id }}" style="color: red;">Excluir</label>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <hr style="margin-top: 20px;">
+
+    <div class="form-group">
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
+</form>
+
+{% endblock %}

@@ -1,0 +1,69 @@
+/* static/css/style.css (VERSÃO BOOTSTRAP) */
+
+/* --- 1. Estilos do Swiper.js (Carrossel) --- */
+/* (Mantenha todo o CSS do .carousel-container, .swiper-slide, etc.) */
+.carousel-container {
+    width: 100%;
+    height: 300px;
+    background-color: #f4f4f4;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+:root {
+    --swiper-theme-color: #007aff;
+}
+.swiper-button-prev,
+.swiper-button-next {
+    color: var(--swiper-theme-color) !important;
+}
+.swiper-pagination-bullet-active {
+    background: var(--swiper-theme-color) !important;
+}
+@media (min-width: 768px) {
+    .carousel-container {
+        height: 400px; 
+    }
+}
+/* --- FIM DO SWIPER --- */
+
+
+/* --- 2. Estilos Customizados (Bootstrap Tweaks) --- */
+
+/* Posiciona o contador do carrinho sobre o ícone */
+.nav-icon {
+    position: relative;
+}
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    font-size: 0.7rem;
+    line-height: 1;
+    padding: 3px 6px;
+    /* 'display: none' será controlado pelo JS */
+    display: none; 
+}
+
+/* Garante que a galeria do modal do produto não quebre */
+.product-modal-gallery img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    cursor: pointer;
+}
